@@ -1,26 +1,22 @@
-Отлично, вот обновленный `README.md` на русском языке, с вашими новыми путями по умолчанию.
-
------
-
-# vite-svgsprite ✨
+# svgsprite-vite-plugin ✨
 
 **Простой и эффективный Vite-плагин для автоматической генерации SVG-спрайтов.**
 
-`vite-svgsprite` собирает ваши отдельные SVG-иконки в единый оптимизированный спрайт, повышая производительность и упрощая управление иконками в ваших Vite-проектах. Больше никаких лишних HTTP-запросов за каждой иконкой\!
+`svgsprite-vite-plugin` собирает ваши отдельные SVG-иконки в единый оптимизированный спрайт, повышая производительность и упрощая управление иконками в ваших Vite-проектах. Больше никаких лишних HTTP-запросов за каждой иконкой\!
 
 -----
 
 ## 🚀 Установка
 
-Установите плагин, используя npm или yarn: (НЕТ ЕГО ТАМ)
+Установите плагин, используя npm или yarn: 
 
 ```bash
-npm install ваш-пакет-vite-svgsprite-имя # Замените на ваше имя пакета
+npm install svgsprite-vite-plugin # Замените на ваше имя пакета
 # или
-yarn add ваш-пакет-vite-svgsprite-имя # Замените на ваше имя пакета
+yarn add svgsprite-vite-plugin # Замените на ваше имя пакета
 ```
 
-*(Примечание: Если вы используете этот код локально, не публикуя его как npm-пакет, просто скопируйте `vite-svgsprite.js` в папку `plugins` вашего проекта и импортируйте его оттуда.)*
+*(Примечание: Если вы используете этот код локально, не публикуя его как npm-пакет, просто скопируйте `svgsprite-vite-plugin.js` в папку `plugins` вашего проекта и импортируйте его оттуда.)*
 
 -----
 
@@ -28,14 +24,14 @@ yarn add ваш-пакет-vite-svgsprite-имя # Замените на ваш�
 
 ### 1\. Добавьте плагин в ваш `vite.config.js`
 
-Создайте файл `vite-svgsprite.js` (например, в папке `plugins/` вашего проекта) и вставьте в него код плагина:
+Создайте файл `svgsprite-vite-plugin.js` (например, в папке `plugins/` вашего проекта) и вставьте в него код плагина:
 
 ```javascript
-// plugins/vite-svgsprite.js
+// plugins/svgsprite-vite-plugin.js
 import { promises as fs } from 'fs';
 import path from 'path';
 
-export default function viteSvgSprite(options = {}) {
+export default function svgspriteVitePlugin(options = {}) {
   // Новые пути по умолчанию
   const defaultOptions = {
     input: 'src/icons',      // Путь к исходным SVG-иконкам (от корня проекта)
@@ -55,7 +51,7 @@ export default function viteSvgSprite(options = {}) {
       files = await fs.readdir(iconsDir);
     } catch (error) {
       if (error.code === 'ENOENT') {
-        console.warn(`[vite-svgsprite] Папка с иконками не найдена: ${iconsDir}. Спрайт не будет создан.`);
+        console.warn(`[svgsprite-vite-plugin] Папка с иконками не найдена: ${iconsDir}. Спрайт не будет создан.`);
         return;
       }
       throw error;
@@ -77,11 +73,11 @@ export default function viteSvgSprite(options = {}) {
     await fs.mkdir(outputDir, { recursive: true });
     const sprite = `<svg>\n\n${symbols}</svg>`;
     await fs.writeFile(spriteFilePath, sprite);
-    console.log(`[vite-svgsprite] SVG-спрайт создан: ${spriteFilePath}`);
+    console.log(`[svgsprite-vite-plugin] SVG-спрайт создан: ${spriteFilePath}`);
   }
 
   return {
-    name: 'vite-svgsprite',
+    name: 'svgsprite-vite-plugin',
     buildStart() {
       return generateIconSprite();
     },
@@ -90,7 +86,7 @@ export default function viteSvgSprite(options = {}) {
       server.watcher.add(watcherPath);
       server.watcher.on('change', async (changedPath) => {
         if (changedPath.endsWith('.svg')) {
-          console.log(`[vite-svgsprite] Изменение SVG-файла: ${changedPath}. Пересоздаем спрайт.`);
+          console.log(`[svgsprite-vite-plugin] Изменение SVG-файла: ${changedPath}. Пересоздаем спрайт.`);
           return generateIconSprite();
         }
       });
@@ -104,11 +100,11 @@ export default function viteSvgSprite(options = {}) {
 ```javascript
 // vite.config.js
 import { defineConfig } from 'vite';
-import viteSvgSprite from './plugins/vite-svgsprite.js'; // Убедитесь, что путь правильный
+import svgspriteVitePlugin from './plugins/svgsprite-vite-plugin.js'; // Убедитесь, что путь правильный
 
 export default defineConfig({
   plugins: [
-    viteSvgSprite({
+    svgspriteVitePlugin({
       // Опциональные настройки:
       // input: 'src/assets/svg-icons', // Иконки будут читаться из `src/assets/svg-icons/`
       // output: 'public/images',       // Спрайт будет создан в корневой `public/` папке
@@ -141,7 +137,7 @@ my-vite-project/
 │   │   └── user.svg
 │   └── main.js
 ├── plugins/
-│   └── vite-svgsprite.js
+│   └── svgsprite-vite-plugin.js
 └── vite.config.js
 ```
 
@@ -180,7 +176,7 @@ my-vite-project/
 
 ## ⚙️ Опции
 
-Вы можете передать объект опций плагину `viteSvgSprite()`:
+Вы можете передать объект опций плагину `svgspriteVitePlugin()`:
 
 | Опция  | Тип      | По умолчанию     | Описание                                                                  |
 | :----- | :------- | :--------------- | :------------------------------------------------------------------------ |
@@ -204,7 +200,7 @@ my-vite-project/
 
 ## 🤝 Вклад
 
-Приветствуются любые вклады\! Если у вас есть идеи по улучшению, отчеты об ошибках или предложения, пожалуйста, создавайте [Issue](https://www.google.com/search?q=https://github.com/your-username/vite-svgsprite/issues) или [Pull Request](https://www.google.com/search?q=https://github.com/your-username/vite-svgsprite/pulls) на GitHub.
+Приветствуются любые вклады\! Если у вас есть идеи по улучшению, отчеты об ошибках или предложения, пожалуйста, создавайте [Issue](https://www.google.com/search?q=https://github.com/your-username/svgsprite-vite-plugin/issues) или [Pull Request](  https://www.google.com/search?q=https://github.com/your-username/svgsprite-vite-plugin/pulls) на GitHub.
 
 -----
 
